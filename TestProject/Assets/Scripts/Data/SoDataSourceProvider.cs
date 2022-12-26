@@ -1,7 +1,6 @@
 using System;
-using UnityEngine;
 
-namespace DataSource
+namespace Data
 {
     public class SoDataSourceProvider<TData> : IDataSource<TData> where TData : class
     {

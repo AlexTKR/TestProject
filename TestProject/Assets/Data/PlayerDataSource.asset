@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e04cfa5e741724d851aae80c92a564, type: 3}
   m_Name: PlayerDataSource
   m_EditorClassIdentifier: 
-  Radius: 0
+  Radius: 2
   Speed: 1
   DamageAmount: 10

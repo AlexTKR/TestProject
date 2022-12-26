@@ -1,7 +1,4 @@
-using Data;
-using DataSource;
-
-namespace DataRepository
+namespace Data
 {
     public class PlayerDataRepository : IDataRepository<PlayerData>
     {

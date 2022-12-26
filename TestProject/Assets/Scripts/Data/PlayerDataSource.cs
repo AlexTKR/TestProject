@@ -1,7 +1,6 @@
-using Data;
 using UnityEngine;
 
-namespace DataSource
+namespace Data
 {
     [CreateAssetMenu(menuName = "Data/PlayerData", fileName = "PlayerData")]
     public class PlayerDataSource : SoDataSourceBase<PlayerData>

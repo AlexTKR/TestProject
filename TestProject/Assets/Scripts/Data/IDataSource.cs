@@ -1,4 +1,4 @@
-namespace DataSource
+namespace Data
 {
     public interface IDataSource<T>
     {

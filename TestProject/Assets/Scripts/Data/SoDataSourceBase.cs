@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataSource
+namespace Data
 {
     public abstract class SoDataSourceBase<T> : ScriptableObject where T : class
     {
