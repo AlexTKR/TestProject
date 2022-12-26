@@ -1,0 +1,17 @@
+{
+    "name": "DataSource",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d023e66732f8fda468412b92b7f19e84",
+        "GUID:77f5b4310d0b3f94096aad187c58ce26"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

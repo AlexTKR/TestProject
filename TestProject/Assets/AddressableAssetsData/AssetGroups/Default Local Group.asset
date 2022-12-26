@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: dd73bbdb09991f541942d2f442cc870a
+  m_SerializeEntries:
+  - m_GUID: 84826a4261dc06b4eabf902eee6c046d
+    m_Address: Player
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 28c9580ac30d2bc43bdf2afed9cf335c
+    m_Address: PlayerDataSource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b5451069c75e9204c9f845a0f4f04900
+    m_Address: EnemyHolder
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77de7f9c64115834ca855e3e1ae60cb4
+    m_Address: GameSettings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 749eaf71c6f90134f8a7cdbc2a5bd4f3
+    m_Address: UpgradeSettings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 025a3f3505c7691469db81f5b427ee01, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7a408ccd118086e40805b4aa9d95e8eb, type: 2}
+    - {fileID: 11400000, guid: 0d04bed3654f8dd4db4e7dfa7da778cb, type: 2}
