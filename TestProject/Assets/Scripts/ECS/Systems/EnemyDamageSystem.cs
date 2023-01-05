@@ -22,8 +22,8 @@ namespace ECS.Systems
         {
             _filter = World.Filter.With<EnemyComponent>().With<DamageComponent>()
                 .With<HealthComponent>();
-            _dataRepository = SceneContext.Instance.Get<IDataRepository<PlayerData>>();
-            _playerKillDataRepository = SceneContext.Instance.Get<IDataRepository<PlayerKillData>>();
+            _dataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
+            _playerKillDataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerKillData>>();
         }
 
         public override void OnUpdate(float deltaTime)

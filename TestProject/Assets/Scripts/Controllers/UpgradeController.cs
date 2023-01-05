@@ -41,7 +41,7 @@ namespace Controllers
 
         public override void Init()
         {
-            _playerDataRepository = SceneContext.Instance.Get<IDataRepository<PlayerData>>();
+            _playerDataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
             _loadSettings = ProjectContext.Instance.Get<ILoadSettings<UpgradeSettings>>();
             _upgradeData =
                 _loadSettings.LoadSettings().Load(runAsync: false).Result.UpgradeData.Clone() as UpgradeData[];

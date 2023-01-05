@@ -7,6 +7,6 @@ namespace ECS.Pools
     public interface IEnemyPool<T>
     {
         T Get(EnemyType enemyType);
-        void Return(T entity , EnemyType type);
+        void Return(T entity , EnemyType enemyType);
     }
 }

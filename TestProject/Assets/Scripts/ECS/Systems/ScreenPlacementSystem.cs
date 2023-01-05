@@ -20,7 +20,7 @@ namespace ECS.Systems
         {
             _filter = World.Filter.With<ScreenPlacementComponent>().With<TransformComponent>()
                 .With<ColliderComponent>();
-            _screenBounds = SceneContext.Instance.Get<IGetScreenBounds>().ScreenBounds;
+            _screenBounds = SceneContext.Instance.GetSingle<IGetScreenBounds>().ScreenBounds;
         }
 
         public override void OnUpdate(float deltaTime)

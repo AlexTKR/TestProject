@@ -18,7 +18,7 @@ namespace ECS.Initializers
 
         public override void OnAwake()
         {
-            _dataRepository = SceneContext.Instance.Get<IDataRepository<PlayerData>>();
+            _dataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
             var playerGameObject = ProjectContext.Instance.Get<ILoadPlayer>().LoadPLayer().Load(runAsync: false).Result;
             World.CreateEntity().SetComponent(new SpawnComponent() { Prefab = playerGameObject , IsActive = true});
         }

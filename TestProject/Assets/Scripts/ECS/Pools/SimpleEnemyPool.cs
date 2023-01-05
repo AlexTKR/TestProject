@@ -1,37 +1,39 @@
 using System;
 using System.Collections.Generic;
 using ECS.Components;
-using Morpeh;
 using UnityEngine;
 
 namespace ECS.Pools
 {
-    public class SimpleEnemyPool<T> : IEnemyPool<T> where T : class
+    public class SimpleEnemyPool : IEnemyPool<GameObject>
     {
-        private Dictionary<EnemyType, List<T>> _container =
-            new Dictionary<EnemyType, List<T>>();
+        private IEntityPool<GameObject> _redEnemyPool = new SimpleEntityPool<GameObject>();
+        private IEntityPool<GameObject> _yellowEnemyPool = new SimpleEntityPool<GameObject>();
+        private IEntityPool<GameObject> _greenEnemyPool = new SimpleEntityPool<GameObject>();
 
-        public SimpleEnemyPool()
+
+        public GameObject Get(EnemyType enemyType)
         {
-            foreach (var enemyType in Enum.GetValues(typeof(EnemyType)))
+            var entity = enemyType switch
             {
-                _container[(EnemyType)enemyType] = new List<T>();
-            }
-        }
+                EnemyType.Red => _redEnemyPool.Get(),
+                EnemyType.Yellow => _yellowEnemyPool.Get(),
+                EnemyType.Green => _greenEnemyPool.Get(),
+            };
 
-        public T Get(EnemyType enemyType)
-        {
-            if (_container[enemyType].Count == 0)
-                return null;
-
-            var entity = _container[enemyType][0];
-            _container[enemyType].RemoveAt(0);
             return entity;
         }
 
-        public void Return(T entity, EnemyType type)
+        public void Return(GameObject entity, EnemyType enemyType)
         {
-            _container[type].Add(entity);
+            var pool = enemyType switch
+            {
+                EnemyType.Red => _redEnemyPool,
+                EnemyType.Yellow => _yellowEnemyPool,
+                EnemyType.Green => _greenEnemyPool,
+            };
+
+            pool.Return(entity);
         }
     }
 }

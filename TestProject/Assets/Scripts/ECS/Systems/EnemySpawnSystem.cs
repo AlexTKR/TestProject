@@ -30,7 +30,7 @@ namespace ECS.Systems
         public override void OnAwake()
         {
             _filter = World.Filter.With<EnemyComponent>().With<ActiveComponent>();
-            _enemyPool = SceneContext.Instance.Get<IEnemyPool<GameObject>>();
+            _enemyPool = SceneContext.Instance.GetSingle<IEnemyPool<GameObject>>();
             var enemyPrefabs = ProjectContext.Instance.Get<ILoadEnemies>().LoadEnemies().Load(runAsync: false).Result
                 .Prefabs;
 

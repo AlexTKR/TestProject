@@ -15,36 +15,35 @@ namespace Composition
     {
         [SerializeField] private PanelBase[] _panels;
 
-        private IProcessUpgrade _processUpgrade;
-        private IInit _initer;
-
         private void Start()
         {
-            RegisterControllers();
             RegisterLoadables();
+            RegisterControllers();
             RegisterData();
             RegisterViewModels();
             RegisterSettings();
             RegisterPools();
 
-            _initer = new Initer((IInit)_processUpgrade);
-            _initer.Init();
+            var initer = new Initer();
+            initer.Init();
         }
 
         private void RegisterPools()
         {
-            SceneContext.Instance.Register<IEnemyPool<GameObject>>(
-                new SimpleEnemyPool<GameObject>());
+            SceneContext.Instance.RegisterAsSingle<IEnemyPool<GameObject>>(
+                new SimpleEnemyPool());
         }
 
         private void RegisterControllers()
         {
-            _processUpgrade = new UpgradeController();
+            var processUpgrade = new UpgradeController();
             var bundleController = new BundleController();
 
-            ProjectContext.Instance.Register(bundleController.GetType().GetInterfaces(), bundleController);
-            SceneContext.Instance.Register<IGetScreenBounds>(new CameraController());
-            SceneContext.Instance.Register<IProcessUpgrade>(_processUpgrade);
+            ProjectContext.Instance.RegisterAsSingle(bundleController.GetType().GetInterfaces(), bundleController);
+            SceneContext.Instance.RegisterAsSingle<IGetScreenBounds>(new CameraController());
+            SceneContext.Instance.RegisterAsSingle<IProcessUpgrade>(processUpgrade);
+
+            SceneContext.Instance.RegisterAsMultiple<IInit>(new object[] { processUpgrade });
         }
 
         private void RegisterSettings()
@@ -62,15 +61,15 @@ namespace Composition
                 .Load(runAsync: false)
                 .Result;
 
-            SceneContext.Instance.Register<IDataRepository<PlayerData>>(
+            SceneContext.Instance.RegisterAsSingle<IDataRepository<PlayerData>>(
                 new PlayerDataRepository(new SoDataSourceProvider<PlayerData>(playerDataSource)));
-            SceneContext.Instance.Register<IDataRepository<PlayerKillData>>(new PlayerKillRepository());
+            SceneContext.Instance.RegisterAsSingle<IDataRepository<PlayerKillData>>(new PlayerKillRepository());
         }
 
         private void RegisterViewModels()
         {
             var viewModelProvider = new ViewModelProvider();
-            SceneContext.Instance.Register<IGetViewModel>(viewModelProvider);
+            SceneContext.Instance.RegisterAsSingle<IGetViewModel>(viewModelProvider);
 
             for (int i = 0; i < _panels.Length; i++)
             {
@@ -84,7 +83,7 @@ namespace Composition
 
             foreach (var type in bundleController.GetType().GetInterfaces())
             {
-                ProjectContext.Instance.Register(type, bundleController);
+                ProjectContext.Instance.RegisterAsSingle(type, bundleController);
             }
         }
 

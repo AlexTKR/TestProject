@@ -23,7 +23,7 @@ namespace ECS.Systems
         public override void OnAwake()
         {
             _filter = World.Filter.With<PlayerComponent>().With<TransformComponent>();
-            _dataRepository = SceneContext.Instance.Get<IDataRepository<PlayerData>>();
+            _dataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
             _layerMask = LayerMask.GetMask("Enemy");
         }
 

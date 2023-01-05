@@ -21,7 +21,7 @@ namespace ECS.Systems
         {
             _filter = World.Filter.With<RecyclingComponent>().With<ActiveComponent>()
                 .With<GameobjectComponent>();
-            _enemyPool = SceneContext.Instance.Get<IEnemyPool<GameObject>>();
+            _enemyPool = SceneContext.Instance.GetSingle<IEnemyPool<GameObject>>();
         }
 
         public override void OnUpdate(float deltaTime)

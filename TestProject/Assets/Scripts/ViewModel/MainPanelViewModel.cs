@@ -25,9 +25,9 @@ namespace ViewModel
 
         public override void Compose(Lifetime lifetime, IMainPanel panel)
         {
-            _playerDataRepository = SceneContext.Instance.Get<IDataRepository<PlayerData>>();
-            _playerKillDataRepository = SceneContext.Instance.Get<IDataRepository<PlayerKillData>>();
-            _processUpgrade = SceneContext.Instance.Get<IProcessUpgrade>();
+            _playerDataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
+            _playerKillDataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerKillData>>();
+            _processUpgrade = SceneContext.Instance.GetSingle<IProcessUpgrade>();
 
             Atom.Reaction(lifetime,
                 () => { panel.DamageText.text = _playerDataRepository.Data.DamageAmount.ToString("F1"); });
