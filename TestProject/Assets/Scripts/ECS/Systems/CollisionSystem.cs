@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
 using Context;
 using Data;
 using ECS.Components;
 using ECS.Providers;
+using Extensions;
 using Morpeh;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
@@ -19,9 +19,14 @@ namespace ECS.Systems
         private Filter _filter;
         private IDataRepository<PlayerData> _dataRepository;
         private LayerMask _layerMask;
+        private static Comparison<(int index, float distance)> _comparison;
+
+        private Collider[] _hits
+            = new Collider[10];
 
         public override void OnAwake()
         {
+            _comparison = (curr, next) => curr.distance.CompareTo(next.distance);
             _filter = World.Filter.With<PlayerComponent>().With<TransformComponent>();
             _dataRepository = SceneContext.Instance.GetSingle<IDataRepository<PlayerData>>();
             _layerMask = LayerMask.GetMask("Enemy");
@@ -32,37 +37,42 @@ namespace ECS.Systems
             if (_filter.IsEmpty())
                 return;
 
+            _hits.ClearOptimized();
+
             var playerEntity = _filter.First();
             ref var playerTransformComponent = ref playerEntity.GetComponent<TransformComponent>();
 
-            var hits = Physics.OverlapSphere(playerTransformComponent.Transform.position, _dataRepository.Data.Radius,
-                _layerMask);
+            var size = Physics.OverlapSphereNonAlloc(playerTransformComponent.Transform.position,
+                _dataRepository.Data.Radius, _hits, _layerMask);
 
-            if (hits.Length <= RuntimeData.MaxDamageCount)
+            if (size == 0)
+                return;
+
+            if (size <= RuntimeData.MaxDamageCount)
             {
-                for (int i = 0; i < hits.Length; i++)
+                for (int i = 0; i < size; i++)
                 {
-                    ApplyDamage(hits, i);
+                    ApplyDamage(_hits, i);
                 }
 
                 return;
             }
 
-            var indexToDistance = new (int Index, float distande)[hits.Length];
-
-            GetClosestTargets(hits, ref playerTransformComponent, indexToDistance);
+            Span<(int index, float distance)> indexToDistance = stackalloc (int Index, float distande)[size];
+            GetClosestTargets(_hits, ref size, ref playerTransformComponent, ref indexToDistance);
 
             for (int i = 0; i < RuntimeData.MaxDamageCount; i++)
             {
-                var index = indexToDistance[i].Index;
-                ApplyDamage(hits, index);
+                var index = indexToDistance[i].index;
+                ApplyDamage(_hits, index);
             }
         }
 
-        private static void GetClosestTargets(Collider[] hits, ref TransformComponent playerTransformComponent,
-            (int Index, float distande)[] indexToDistance)
+        private static void GetClosestTargets(Collider[] hits, ref int size,
+            ref TransformComponent playerTransformComponent,
+            ref Span<(int, float)> indexToDistance)
         {
-            for (int i = 0; i < hits.Length; i++)
+            for (int i = 0; i < size; i++)
             {
                 if (!hits[i].TryGetComponent<CollisionProvider>(out var provider))
                     continue;
@@ -73,7 +83,7 @@ namespace ECS.Systems
                 indexToDistance[i] = (i, distance);
             }
 
-            Array.Sort(indexToDistance, (curr, next) => curr.distande.CompareTo(next.distande));
+            indexToDistance.SortSpan(_comparison);
         }
 
         private static void ApplyDamage(Collider[] hits, int index)
